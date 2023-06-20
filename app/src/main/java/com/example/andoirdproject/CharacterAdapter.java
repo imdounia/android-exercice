@@ -1,4 +1,5 @@
 package com.example.andoirdproject;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,37 +11,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
+public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterHolder> {
 
-    private List<Character> characterList;
+    private final Context context;
+    private final List<Character> characterList;
 
-    public CharacterAdapter() {
-        characterList = new ArrayList<>();
-    }
-
-    public void setCharacterList(List<Character> characters) {
-        characterList = characters;
-        notifyDataSetChanged();
+    public CharacterAdapter(Context context, List<Character> characterList) {
+        this.context = context;
+        this.characterList = characterList;
     }
 
     @NonNull
     @Override
-    public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_character, parent, false);
-        return new CharacterViewHolder(view);
+    public CharacterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.item_character,
+                parent,
+                false
+        );
+        return new CharacterHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CharacterViewHolder holder, int position) {
-        Character character = characterList.get(position);
+    public void onBindViewHolder(@NonNull CharacterHolder holder, int position) {
 
-        holder.nameTextView.setText(character.getName());
-        Glide.with(holder.itemView.getContext())
+        final Character character = characterList.get(position);
+        holder.nameText.setText(character.getName());
+
+        Glide.with(context)
                 .load(character.getImageUrl())
-                .into(holder.characterImageView);
+                .placeholder(R.drawable.placeholder)
+                .centerCrop()
+                .into(holder.imageView);
+
     }
 
     @Override
@@ -48,16 +53,15 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         return characterList.size();
     }
 
-    static class CharacterViewHolder extends RecyclerView.ViewHolder {
+    public static class CharacterHolder extends RecyclerView.ViewHolder {
 
-        ImageView characterImageView;
-        TextView nameTextView;
+        private final ImageView imageView;
+        private final TextView nameText;
 
-        public CharacterViewHolder(@NonNull View itemView) {
+        public CharacterHolder(@NonNull View itemView) {
             super(itemView);
-
-            characterImageView = itemView.findViewById(R.id.characterImageView);
-            nameTextView = itemView.findViewById(R.id.nameTextView);
+            imageView = itemView.findViewById(R.id.image_thumbnail_path);
+            nameText = itemView.findViewById(R.id.name);
         }
     }
 }

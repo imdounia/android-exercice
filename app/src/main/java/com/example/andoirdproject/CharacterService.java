@@ -1,11 +1,12 @@
 package com.example.andoirdproject;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface CharacterService {
+
     @GET("character")
-    Call<List<Character>> getCharacters();
+    Call<CharacterRoot> getCharacterList(@Query("page") int page);
+
 }
