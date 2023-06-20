@@ -2,13 +2,15 @@ package com.example.andoirdproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button loginButton;
     private ImageView googleImageView;
     private ImageView facebookImageView;
     private ImageView appleImageView;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         googleImageView = findViewById(R.id.googleImageView);
         facebookImageView = findViewById(R.id.facebookImageView);
         appleImageView = findViewById(R.id.appleImageView);
+        loginButton = findViewById(R.id.loginButton);
 
         googleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
                 showToast("Connected with Apple");
             }
         });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CharacterActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void showToast(String message) {
